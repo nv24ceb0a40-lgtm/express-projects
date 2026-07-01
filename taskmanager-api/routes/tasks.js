@@ -2,9 +2,15 @@ import express from "express";
 import arr from "../data/data.js";
 const router=express.Router();
 
-router.get("/alltasks",(req,res)=>{
+router.use((req,res,next)=>{
+    console.log("task router hit");
+    next();
+})
+router.get("/alltasks",(req,res,next)=>{
 
     res.json(arr);
+    // const error = new Error("something went wrong");
+    //next(error); 
 })
 
 router.get("/pending",(req,res)=>{

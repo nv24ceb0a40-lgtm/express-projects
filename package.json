@@ -5,12 +5,13 @@
   "license": "ISC",
   "author": "me",
   "type": "module",
-  "main": "index.js",
+  "main": "./taskmanager-api/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev" : "nodemon index.js"
+    "dev": "nodemon ./taskmanager-api/index.js"
   },
   "dependencies": {
+    "dotenv": "^17.4.2",
     "express": "^5.2.1"
   },
   "devDependencies": {
