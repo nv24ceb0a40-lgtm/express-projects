@@ -3,7 +3,7 @@ import arr from "../data/data.js";
 const router=express.Router();
 
 router.use((req,res,next)=>{
-    console.log("task router hit");
+   // console.log("task router hit");
     next();
 })
 router.get("/alltasks",(req,res,next)=>{
