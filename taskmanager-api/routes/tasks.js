@@ -1,71 +1,61 @@
 import express from "express";
-import arr from "../data/data.js";
+import Task from "../models/task.js"
 const router=express.Router();
+router.get("/alltasks", async (req, res, next) => {
+    try {
+        const tasks = await Task.find();
+        res.json(tasks);
+    } catch (err) {
+        next(err);
+    }
+});
 
-router.use((req,res,next)=>{
-   // console.log("task router hit");
-    next();
-})
-router.get("/alltasks",(req,res,next)=>{
+router.get("/pending", async (req, res, next) => {
+    try {
+        const tasks = await Task.find({ status: "pending" });
+        res.json(tasks);
+    } catch (err) {
+        next(err);
+    }
+});
 
-    res.json(arr);
-    // const error = new Error("something went wrong");
-    //next(error); 
-})
+router.get("/finished", async (req, res, next) => {
+    try {
+        const tasks = await Task.find({ status: "finished" });
+        res.json(tasks);
+    } catch (err) {
+        next(err);
+    }
+});
 
-router.get("/pending",(req,res)=>{
+router.get("/:id", async (req, res, next) => {
+    try {
+        const task = await Task.findById(req.params.id);
 
-    
-    const tasks=arr.filter((task)=>{
-        
-        return task.status=="pending";
-    })
-    res.json(tasks);
-})
+        if (!task) {
+            return res.status(404).json({ message: "Task not found" });
+        }
 
-router.get("/finished",(req,res)=>{
+        res.json(task);
+    } catch (err) {
+        next(err);
+    }
+});
 
+router.post("/new", async (req, res, next) => {
+    try {
+        const { title, status } = req.body;
 
-   const tasks=arr.filter((task)=>{
-        
-        return task.status==="completed";
-    })
-    res.json(tasks);
-})
+        const newTask = await Task.create({
+            title,
+            status
+        });
 
-router.get("/:id",(req,res)=>{
+        res.status(201).json(newTask);
+    } catch (err) {
+        next(err);
+    }
+});
 
-    const task=arr.filter((task)=>{
-
-           return  task.id===req.params.id;
-    })
-
-    res.json(task);
-})
-
-router.post("/new",(req,res)=>{
-    const {task,status}=req.body;
-    arr.push({
-
-        "id":`${arr.length+1}`,
-        "task":task,
-        "status":status
-
-    });
-
-    res.status(201).json({meassage:"task added"});
-})
-
-router.put("/edit/:id",(req,res)=>{
-
-    const task=arr.find((task)=>{
-        return task.id===req.params.id;
-    })
-
-    task.task=req.body.task;
-    task.status=req.body.status;
-    res.json(task);
-
-})
 
 export default router;

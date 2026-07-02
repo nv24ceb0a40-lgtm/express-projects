@@ -1,6 +1,6 @@
 import dotenv from"dotenv";
 dotenv.config();
-console.log(process.env.MONGO_URL);
+//console.log(process.env.MONGO_URL);
 import express from "express";
 import connection from "./config/db.js";
 import tasks from "./routes/tasks.js"
